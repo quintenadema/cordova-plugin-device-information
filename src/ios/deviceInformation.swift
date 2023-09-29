@@ -6,10 +6,31 @@ class DeviceInformation: CDVPlugin {
 	private var currentCommand: CDVInvokedUrlCommand?
 	private var onCallbacks = [String: String]()
 	
+	override func pluginInitialize() {
+		super.pluginInitialize()
+		
+		// Enable battery monitoring
+		UIDevice.current.isBatteryMonitoringEnabled = true
+		
+		// Add observers for battery level and state changes
+		NotificationCenter.default.addObserver(self, selector: #selector(batteryLevelDidChange), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(batteryStateDidChange), name: UIDevice.batteryStateDidChangeNotification, object: nil)
+	}
+	@objc func batteryLevelDidChange(_ notification: Notification) {
+		callCallback("onBattery", data: getBattery())
+	}
+	
+	@objc func batteryStateDidChange(_ notification: Notification) {
+		callCallback("onBattery", data: getBattery())
+	}
+	
+	
 	@objc func device(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
-		
-		let returnData: [String: Any] = [
+		sendPluginResult(true, data: getDevice())
+	}
+	func getDevice() -> [String: Any] {
+		return [
 			"locale": [
 				"locale": Locale.current.identifier,
 				"preferredLanguages": Locale.preferredLanguages
@@ -20,95 +41,89 @@ class DeviceInformation: CDVPlugin {
 				"name": UIDevice.current.name
 			]
 		]
-		
-		sendPluginResult(true, data: returnData)
 	}
+	
 	
 	@objc func app(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
-		
-		guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL else {
-			sendPluginResult(false, data: "Cannot detect installation method")
-			return
-		}
-		
-		let returnData: [String: Any] = [
-			"installationMethod": appStoreReceiptURL.lastPathComponent == "sandboxReceipt" ? "testflight" : "store",
+		sendPluginResult(true, data: getApp())
+	}
+	func getApp() -> [String: Any] {
+		return [
+			"installationMethod": Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "testflight" : "store",
 			"version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A",
 			"bundle": Bundle.main.bundleIdentifier ?? "N/A"
 		]
-		
-		sendPluginResult(true, data: returnData)
 	}
+	
 	
 	@objc func network(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
-		
+		sendPluginResult(true, data: getNetwork())
+	}
+	func getNetwork() -> [String: Any] {
 		let networkInfo = CTTelephonyNetworkInfo()
 		let carrier = networkInfo.subscriberCellularProvider
 		
-		let returnData: [String: Any] = [
+		return [
 			"carrier": carrier?.carrierName ?? "N/A",
 			"countryCode": carrier?.mobileCountryCode ?? "N/A"
 		]
-		
-		sendPluginResult(true, data: returnData)
 	}
 	
 	@objc func disk(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
-		
+		sendPluginResult(true, data: getDisk())
+	}
+	func getDisk() -> [String: Any] {
 		let fileManager = FileManager.default
 		let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).last!
 		let systemAttributes = try? fileManager.attributesOfFileSystem(forPath: documentDirectory.path)
 		let freeSpace = systemAttributes?[FileAttributeKey.systemFreeSize] as? NSNumber
 		
-		let returnData: [String: Any] = [
+		return [
 			"freeSpace": freeSpace ?? "N/A"
 		]
-		
-		sendPluginResult(true, data: returnData)
 	}
 	
 	@objc func battery(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
-		
-		UIDevice.current.isBatteryMonitoringEnabled = true
-		
+		sendPluginResult(true, data: getBattery())
+	}
+	func getBattery() -> [String: Any] {
 		var batteryState: String
 		switch UIDevice.current.batteryState {
-			case .unknown:
-				batteryState = "unknown"
-			case .unplugged:
-				batteryState = "unplugged"
-			case .charging:
-				batteryState = "charging"
-			case .full:
-				batteryState = "full"
-			@unknown default:
-				batteryState = "unkown"
+		case .unknown:
+			batteryState = "unknown"
+		case .unplugged:
+			batteryState = "unplugged"
+		case .charging:
+			batteryState = "charging"
+		case .full:
+			batteryState = "full"
+		@unknown default:
+			batteryState = "unkown"
 		}
 		
-		let returnData: [String: Any] = [
+		return [
 			"batteryLevel": (UIDevice.current.batteryLevel * 100 * 100).rounded() / 100,
 			"batteryState": batteryState
 		]
-		
-		sendPluginResult(true, data: returnData)
 	}
 	
 	@objc func jailbreak(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
-		
-		let isJailbroken = FileManager.default.fileExists(atPath: "/Applications/Cydia.app")
-		
-		let returnData: [String: Any] = [
-			"isJailbroken": isJailbroken
+		sendPluginResult(true, data: getJailbreak())
+	}
+	func getJailbreak() -> [String: Any] {
+		return [
+			"isJailbroken": FileManager.default.fileExists(atPath: "/Applications/Cydia.app")
 		]
-		
-		sendPluginResult(true, data: returnData)
 	}
 	
+		
+		
+		
 	@objc func setCallback(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
 		
