@@ -8,9 +8,6 @@ cordova plugin add https://github.com/quintenadema/cordova-plugin-device-informa
 ```
 
 ## Usage
-Check the installed method
-
-
 ### Get device information
 Usage:
 ```
