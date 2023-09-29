@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-testflight-detector" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="cordova-plugin-device-information" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
 	<name>Device Information</name>
 	<description>Cordova plugin to check all sorts of device information</description>
 	<license>MIT</license>

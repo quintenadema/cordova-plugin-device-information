@@ -42,4 +42,4 @@ deviceInformation['setCallback'] = async function(name, callback) {
 }
 
 
-module.exports = testflightDetector;
+module.exports = deviceInformation;
