@@ -1,19 +1,93 @@
-# Cordova Testflight Detector
-Detect how the app is installed on iOS and Android.
+# Cordova Device Information
+Cordova plugin to check all sorts of device information
 
 ## Installation
 Simply run
 ```
-cordova plugin add https://github.com/quintenadema/cordova-plugin-testflight-detector
+cordova plugin add https://github.com/quintenadema/cordova-plugin-device-information
 ```
 
 ## Usage
 Check the installed method
+
+
+### Get device information
+Usage:
 ```
-const installedMethod = await testflightDetector.check();
-console.log(installedMethod);
+const device = await deviceInformation.device();
+console.log(device);
 ```
 
-`installedMethod` can be one of the following:
-- `debug` means the app was installed via TestFlight or sideloaded
-- `production` means the app was installed via the official App / Play store
+Example response:
+```
+{
+	"locale": [
+		"locale": "",
+		"preferredLanguages": [
+			"",
+			""
+		]
+	],
+	"device": [
+		"model": "",
+		"systemVersion": "",
+		"name": ""
+	]
+}
+```
+
+
+### Get app information
+Usage:
+```
+const app = await deviceInformation.app();
+console.log(app);
+```
+
+Example response:
+```
+{
+}
+```
+
+### Get network information
+Usage:
+```
+const network = await deviceInformation.network();
+console.log(network);
+```
+
+Example response:
+```
+{
+
+}
+```
+
+### Get battery information
+Usage:
+```
+const battery = await deviceInformation.battery();
+console.log(battery);
+```
+
+Example response:
+```
+{
+	"batteryCharge": 60,
+	"batteryState": "charging"
+}
+```
+
+### Get jailbreak information
+```
+const jailbreak = await deviceInformation.jailbreak();
+console.log(jailbreak);
+```
+
+Example response:
+```
+{
+	"isJailbroken": true
+}
+```

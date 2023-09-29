@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-testflight-detector" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+	<name>Device Information</name>
+	<description>Cordova plugin to check all sorts of device information</description>
+	<license>MIT</license>
+	<keywords>device,information,cordova</keywords>
+
+	<platform name="ios">
+		<config-file target="config.xml" parent="/*">
+			<feature name="DeviceInformation">
+				<param name="ios-package" value="DeviceInformation" />
+			</feature>
+		</config-file>
+
+		<source-file src="src/ios/DeviceInformation.swift" />
+
+		<source-file src="src/ios/deviceInformation-Bridging-Header.h" />
+		
+		<dependency id="cordova-plugin-add-swift-support"/>
+	</platform>
+	<platform name="android">
+	</platform>
+
+
+	<js-module src="www/deviceInformation.js" name="deviceInformation">
+		<clobbers target="deviceInformation" />
+	</js-module>
+
+	<engines>
+		<engine name="cordova" version=">=10.0.0" />
+	</engines>
+</plugin>
