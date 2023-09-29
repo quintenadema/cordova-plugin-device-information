@@ -29,7 +29,7 @@ deviceInformation['battery'] = async function() {
 }
 deviceInformation['jailbreak'] = async function() {
 	return new Promise((resolve, reject) => {
-		exec(resolve, reject, "DeviceInformation", "battery", []);
+		exec(resolve, reject, "DeviceInformation", "jailbreak", []);
 	});
 }
 

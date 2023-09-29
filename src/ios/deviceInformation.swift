@@ -75,12 +75,23 @@ class DeviceInformation: CDVPlugin {
 		
 		UIDevice.current.isBatteryMonitoringEnabled = true
 		
-		let batteryLevel = UIDevice.current.batteryLevel
-		let batteryState = UIDevice.current.batteryState
+		var batteryState: String
+		switch UIDevice.current.batteryState {
+			case .unknown:
+				batteryState = "unknown"
+			case .unplugged:
+				batteryState = "unplugged"
+			case .charging:
+				batteryState = "charging"
+			case .full:
+				batteryState = "full"
+			@unknown default:
+				batteryState = "unkown"
+		}
 		
 		let returnData: [String: Any] = [
-			"batteryLevel": batteryLevel,
-			"batteryState": batteryState.rawValue
+			"batteryLevel": (UIDevice.current.batteryLevel * 100 * 100).rounded() / 100,
+			"batteryState": batteryState
 		]
 		
 		sendPluginResult(true, data: returnData)
@@ -97,7 +108,7 @@ class DeviceInformation: CDVPlugin {
 		
 		sendPluginResult(true, data: returnData)
 	}
-
+	
 	@objc func setCallback(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
 		
@@ -114,8 +125,8 @@ class DeviceInformation: CDVPlugin {
 		
 		sendPluginResult(true, data: data, callbackId: callbackId)
 	}
-
-
+	
+	
 	func sendPluginResult(_ success: Bool, data: Any? = nil, callbackId: String? = nil) {
 		var pluginResult: CDVPluginResult?
 		let status = success ? CDVCommandStatus_OK : CDVCommandStatus_ERROR

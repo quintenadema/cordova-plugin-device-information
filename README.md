@@ -18,21 +18,20 @@ console.log(device);
 Example response:
 ```
 {
+	"device": [
+		"model": "iPhone",
+		"systemVersion": "17.0.2",
+		"name": "iPhone"
+	],
 	"locale": [
-		"locale": "",
+		"locale": "en_NL",
 		"preferredLanguages": [
-			"",
-			""
+			"nl-NL",
+			"en-NL"
 		]
 	],
-	"device": [
-		"model": "",
-		"systemVersion": "",
-		"name": ""
-	]
 }
 ```
-
 
 ### Get app information
 Usage:
@@ -44,6 +43,9 @@ console.log(app);
 Example response:
 ```
 {
+	"version": "3.0.13",
+	"installationMethod": "testflight"
+	"bundle": "com.comodule.velorettibv"
 }
 ```
 
@@ -57,7 +59,22 @@ console.log(network);
 Example response:
 ```
 {
+	"carrier": "--",
+	"countryCode": "65535"
+}
+```
 
+### Get disk information
+Usage:
+```
+const disk = await deviceInformation.disk();
+console.log(disk);
+```
+
+Example response:
+```
+{
+	"freeSpace": 59762274304 // bytes
 }
 ```
 
