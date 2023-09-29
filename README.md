@@ -94,6 +94,7 @@ Example response:
 ```
 
 ### Get jailbreak information
+Usage:
 ```
 const jailbreak = await deviceInformation.jailbreak();
 console.log(jailbreak);
@@ -104,4 +105,14 @@ Example response:
 {
 	"isJailbroken": true
 }
+```
+
+
+
+### Set callback
+Usage:
+```
+deviceInformation.setCallback('onBattery', function(battery) {
+	console.log(battery);
+});
 ```

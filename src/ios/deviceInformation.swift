@@ -9,6 +9,8 @@ class DeviceInformation: CDVPlugin {
 	override func pluginInitialize() {
 		super.pluginInitialize()
 		
+		self.onCallbacks = [:]
+		
 		// Enable battery monitoring
 		UIDevice.current.isBatteryMonitoringEnabled = true
 		
