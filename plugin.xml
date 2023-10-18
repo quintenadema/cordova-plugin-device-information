@@ -6,6 +6,10 @@
 	<keywords>device,information,cordova</keywords>
 
 	<platform name="ios">
+		<config-file target="*-Info.plist" parent="Bridging_Header">
+			<string>$(SRCROOT)/$(PRODUCT_NAME)/Plugins/cordova-plugin-device-information/deviceInformation-Bridging-Header.h</string>
+		</config-file>
+
 		<config-file target="config.xml" parent="/*">
 			<feature name="DeviceInformation">
 				<param name="ios-package" value="DeviceInformation" />

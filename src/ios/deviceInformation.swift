@@ -1,6 +1,13 @@
 import UIKit
+import Foundation
 import CoreTelephony
 import CoreLocation
+import Contacts
+import Photos
+import HealthKit
+import EventKit
+import AVFoundation
+import MediaPlayer
 
 class DeviceInformation: CDVPlugin {
 	private var currentCommand: CDVInvokedUrlCommand?
@@ -56,6 +63,84 @@ class DeviceInformation: CDVPlugin {
 			"version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A",
 			"bundle": Bundle.main.bundleIdentifier ?? "N/A"
 		]
+	}
+
+
+	@objc func permissions(_ command: CDVInvokedUrlCommand) {
+		self.currentCommand = command
+		sendPluginResult(true, data: getApp())
+	}
+	func getPermissions() -> [String: String] {
+		var permissionsDict: [String: String] = [:]
+
+		// Location Permissions
+		let locationManager = CLLocationManager()
+		switch CLLocationManager.authorizationStatus() {
+		case .authorizedAlways:
+			permissionsDict["Location"] = "authorizedAlways"
+		case .authorizedWhenInUse:
+			permissionsDict["Location"] = "authorizedWhenInUse"
+		default:
+			permissionsDict["Location"] = "notAuthorized"
+		}
+
+		// Contacts Permission
+		let contactStore = CNContactStore()
+		switch CNContactStore.authorizationStatus(for: .contacts) {
+		case .authorized:
+			permissionsDict["Contacts"] = "authorized"
+		default:
+			permissionsDict["Contacts"] = "notAuthorized"
+		}
+
+		// Photos Permission
+		switch PHPhotoLibrary.authorizationStatus() {
+		case .authorized:
+			permissionsDict["Photos"] = "authorized"
+		default:
+			permissionsDict["Photos"] = "notAuthorized"
+		}
+
+		// Calendar and Reminders Permissions
+		let eventStore = EKEventStore()
+		switch EKEventStore.authorizationStatus(for: .event) {
+		case .authorized:
+			permissionsDict["Calendar"] = "authorized"
+		default:
+			permissionsDict["Calendar"] = "notAuthorized"
+		}
+		switch EKEventStore.authorizationStatus(for: .reminder) {
+		case .authorized:
+			permissionsDict["Reminders"] = "authorized"
+		default:
+			permissionsDict["Reminders"] = "notAuthorized"
+		}
+
+        // Microphone Permission
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case .granted:
+            permissionsDict["Microphone"] = "authorized"
+        default:
+            permissionsDict["Microphone"] = "notAuthorized"
+        }
+
+        // Camera Permission
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            permissionsDict["Camera"] = "authorized"
+        default:
+            permissionsDict["Camera"] = "notAuthorized"
+        }
+
+        // Media Library Permission
+        switch MPMediaLibrary.authorizationStatus() {
+        case .authorized:
+            permissionsDict["MediaLibrary"] = "authorized"
+        default:
+            permissionsDict["MediaLibrary"] = "notAuthorized"
+        }
+
+		return permissionsDict
 	}
 	
 	

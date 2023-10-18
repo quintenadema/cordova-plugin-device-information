@@ -12,6 +12,11 @@ deviceInformation['app'] = async function() {
 		exec(resolve, reject, "DeviceInformation", "app", []);
 	});
 }
+deviceInformation['permissions'] = async function() {
+	return new Promise((resolve, reject) => {
+		exec(resolve, reject, "DeviceInformation", "permissions", []);
+	});
+}
 deviceInformation['network'] = async function() {
 	return new Promise((resolve, reject) => {
 		exec(resolve, reject, "DeviceInformation", "network", []);
