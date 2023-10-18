@@ -23,8 +23,23 @@
 		<dependency id="cordova-plugin-add-swift-support"/>
 	</platform>
 	<platform name="android">
-	</platform>
+		<preference name="kotlin_version" default="1.9.10"/>
 
+		<config-file target="config.xml" parent="/*">
+			<preference name="android-minSdkVersion" value="21"/>
+			<preference name="android-targetSdkVersion" value="33"/>
+		</config-file>
+
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="DeviceInformation">
+				<param name="android-package" value="com.ademagroup.deviceinformation.DeviceInformation"/>
+			</feature>
+		</config-file>
+
+		<source-file src="src/android/DeviceInformation.kt" target-dir="src/com/ademagroup/deviceinformation/" />
+
+		<dependency id="cordova-plugin-androidx-adapter"/>
+	</platform>
 
 	<js-module src="www/deviceInformation.js" name="deviceInformation">
 		<clobbers target="deviceInformation" />
