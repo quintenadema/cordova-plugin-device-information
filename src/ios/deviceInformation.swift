@@ -59,21 +59,20 @@ class DeviceInformation: CDVPlugin {
 	}
 	func getApp() -> [String: Any] {
 		return [
-			"installationMethod": Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "testflight" : "store",
-			"installationMethodRaw": Bundle.main.appStoreReceiptURL?.lastPathComponent,
+			"beta": Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? true : false,
 			"version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A",
 			"bundle": Bundle.main.bundleIdentifier ?? "N/A"
 		]
 	}
-
-
+	
+	
 	@objc func permissions(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
 		sendPluginResult(true, data: getApp())
 	}
 	func getPermissions() -> [String: String] {
 		var permissionsDict: [String: String] = [:]
-
+		
 		// Location Permissions
 		let locationManager = CLLocationManager()
 		switch CLLocationManager.authorizationStatus() {
@@ -84,7 +83,7 @@ class DeviceInformation: CDVPlugin {
 		default:
 			permissionsDict["Location"] = "notAuthorized"
 		}
-
+		
 		// Contacts Permission
 		let contactStore = CNContactStore()
 		switch CNContactStore.authorizationStatus(for: .contacts) {
@@ -93,7 +92,7 @@ class DeviceInformation: CDVPlugin {
 		default:
 			permissionsDict["Contacts"] = "notAuthorized"
 		}
-
+		
 		// Photos Permission
 		switch PHPhotoLibrary.authorizationStatus() {
 		case .authorized:
@@ -101,7 +100,7 @@ class DeviceInformation: CDVPlugin {
 		default:
 			permissionsDict["Photos"] = "notAuthorized"
 		}
-
+		
 		// Calendar and Reminders Permissions
 		let eventStore = EKEventStore()
 		switch EKEventStore.authorizationStatus(for: .event) {
@@ -116,31 +115,31 @@ class DeviceInformation: CDVPlugin {
 		default:
 			permissionsDict["Reminders"] = "notAuthorized"
 		}
-
-        // Microphone Permission
-        switch AVAudioSession.sharedInstance().recordPermission {
-        case .granted:
-            permissionsDict["Microphone"] = "authorized"
-        default:
-            permissionsDict["Microphone"] = "notAuthorized"
-        }
-
-        // Camera Permission
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            permissionsDict["Camera"] = "authorized"
-        default:
-            permissionsDict["Camera"] = "notAuthorized"
-        }
-
-        // Media Library Permission
-        switch MPMediaLibrary.authorizationStatus() {
-        case .authorized:
-            permissionsDict["MediaLibrary"] = "authorized"
-        default:
-            permissionsDict["MediaLibrary"] = "notAuthorized"
-        }
-
+		
+		// Microphone Permission
+		switch AVAudioSession.sharedInstance().recordPermission {
+		case .granted:
+			permissionsDict["Microphone"] = "authorized"
+		default:
+			permissionsDict["Microphone"] = "notAuthorized"
+		}
+		
+		// Camera Permission
+		switch AVCaptureDevice.authorizationStatus(for: .video) {
+		case .authorized:
+			permissionsDict["Camera"] = "authorized"
+		default:
+			permissionsDict["Camera"] = "notAuthorized"
+		}
+		
+		// Media Library Permission
+		switch MPMediaLibrary.authorizationStatus() {
+		case .authorized:
+			permissionsDict["MediaLibrary"] = "authorized"
+		default:
+			permissionsDict["MediaLibrary"] = "notAuthorized"
+		}
+		
 		return permissionsDict
 	}
 	
@@ -209,9 +208,9 @@ class DeviceInformation: CDVPlugin {
 		]
 	}
 	
-		
-		
-		
+	
+	
+	
 	@objc func setCallback(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
 		
