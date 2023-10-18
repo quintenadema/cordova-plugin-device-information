@@ -59,7 +59,7 @@ class DeviceInformation: CDVPlugin {
 	}
 	func getApp() -> [String: Any] {
 		return [
-			"beta": Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? true : false,
+			"beta": Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "true" : "false",
 			"version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A",
 			"bundle": Bundle.main.bundleIdentifier ?? "N/A"
 		]
@@ -68,7 +68,7 @@ class DeviceInformation: CDVPlugin {
 	
 	@objc func permissions(_ command: CDVInvokedUrlCommand) {
 		self.currentCommand = command
-		sendPluginResult(true, data: getApp())
+		sendPluginResult(true, data: getPermissions())
 	}
 	func getPermissions() -> [String: String] {
 		var permissionsDict: [String: String] = [:]
