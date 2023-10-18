@@ -150,7 +150,12 @@ class DeviceInformation : CordovaPlugin() {
 	private fun getPermissions(callbackContext: CallbackContext) {
 		val returnData = JSONObject().apply {
 			put("location", when {
-				ContextCompat.checkSelfPermission(cordova.activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> "authorized"
+				ContextCompat.checkSelfPermission(cordova.activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> "authorizedFine"
+				ContextCompat.checkSelfPermission(cordova.activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED -> "authorizedCoarse"
+				else -> "notAuthorized"
+			})
+			put("backgroundLocation", when {
+				ContextCompat.checkSelfPermission(cordova.activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED -> "authorized"
 				else -> "notAuthorized"
 			})
 			put("contacts", when {

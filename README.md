@@ -60,14 +60,22 @@ console.log(permissions);
 Example response:
 ```
 {
-	"calendar": "notAuthorized",
+	"location": "authorizedAlways", // iOS only
+	"location": "authorizedWhenInUse", // iOS only
+	"location": "authorizedFine", // Android only
+	"location": "authorizedCoarse", // Android only
+
+	"backgroundLocation": "authorized", // Android only
+	
 	"camera": "notAuthorized",
 	"contacts": "notAuthorized",
-	"location": "authorizedWhenInUse",
-	"mediaLibrary": "notAuthorized", // iOS only
 	"microphone": "notAuthorized",
 	"photos": "notAuthorized",
+	
+	"calendar": "notAuthorized",
 	"reminders": "notAuthorized" // iOS only
+	
+	"mediaLibrary": "notAuthorized", // iOS only
 }
 ```
 
