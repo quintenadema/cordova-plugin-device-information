@@ -44,8 +44,30 @@ Example response:
 ```
 {
 	"version": "3.0.13",
-	"installationMethod": "testflight"
+	"beta": true,
 	"bundle": "com.comodule.velorettibv"
+}
+```
+
+
+### Get permissions
+Usage:
+```
+const permissions = await deviceInformation.permissions();
+console.log(permissions);
+```
+
+Example response:
+```
+{
+	"calendar": "notAuthorized"
+	"camera": "notAuthorized"
+	"contacts": "notAuthorized"
+	"location": "authorizedWhenInUse"
+	"mediaLibrary": "notAuthorized"
+	"microphone": "notAuthorized"
+	"photos": "notAuthorized"
+	"reminders": "notAuthorized"
 }
 ```
 
