@@ -60,7 +60,7 @@ class DeviceInformation: CDVPlugin {
 	func getApp() -> [String: Any] {
 		return [
 			"installationMethod": Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "testflight" : "store",
-			"installationMethodRaw": Bundle.main.appStoreReceiptURL,
+			"installationMethodRaw": Bundle.main.appStoreReceiptURL?.lastPathComponent,
 			"version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A",
 			"bundle": Bundle.main.bundleIdentifier ?? "N/A"
 		]
