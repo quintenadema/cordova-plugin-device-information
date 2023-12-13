@@ -45,7 +45,7 @@ Example response:
 {
 	"version": "3.0.13",
 	"beta": true,
-	"bundle": "com.comodule.velorettibv"
+	"bundle": "com.ademagroup.moofer"
 }
 ```
 
